@@ -52,6 +52,17 @@ public class Users {
         this.role = role;
     }
 
+    public Users(String firstName, String lastName, String password, String email, String mobileNo, float walletMoney) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.email = email;
+        this.mobileNo = mobileNo;
+        this.walletMoney = walletMoney;
+
+    }
+
+
     public int getUserId() {
         return userId;
     }
