@@ -7,26 +7,21 @@ import java.util.Set;
 
 @Entity
 public class FuelType {
-
     @Id
-    @Column(name = "fuel_type_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int fuelTypeId;
 
-    @Column(name="fuel_type",nullable = false,unique = true)
+    @Column(length = 50, nullable = false, unique = true)
     private String fuelType;
 
-
-    public FuelType(String fuelType) {
-        this.fuelType = fuelType;
-    }
-
-    @JsonBackReference
-    @OneToMany(mappedBy = "fuelType",fetch = FetchType.LAZY,cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "fuelType")
     private Set<Vehicle> vehicles;
 
     public FuelType() {
+    }
 
+    public FuelType(int fuelTypeId, String fuelType) {
+        this.fuelTypeId = fuelTypeId;
+        this.fuelType = fuelType;
     }
 
     public int getFuelTypeId() {
@@ -42,19 +37,6 @@ public class FuelType {
     }
 
     public void setFuelType(String fuelType) {
-        this.fuelType = fuelType;
-    }
-
-    public Set<Vehicle> getVehicles() {
-        return vehicles;
-    }
-
-    public void setVehicles(Set<Vehicle> vehicles) {
-        this.vehicles = vehicles;
-    }
-
-    public FuelType(int fuelTypeId, String fuelType) {
-        this.fuelTypeId = fuelTypeId;
         this.fuelType = fuelType;
     }
 

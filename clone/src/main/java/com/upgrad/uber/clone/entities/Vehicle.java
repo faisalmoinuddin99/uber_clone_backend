@@ -9,61 +9,68 @@ import java.util.Set;
 @Entity
 @Table(name = "vehicle")
 public class Vehicle {
-
     @Id
-    @Column(name = "vehicle_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private int vehicleId;
 
-    @Column(name="vehicle_model",nullable = false)
+    @Column(length = 50, nullable = false)
     private String vehicleModel;
 
-    @Column(name="vehicle_number",length = 10,nullable = false)
+    @Column(length = 10, nullable = false)
     private String vehicleNumber;
 
-
-    @Column(nullable = false)
+    @Column(length = 50, nullable = false)
     private String color;
 
-    @Column(name="availability_status",length = 1,nullable = false)
+    @Column(nullable = false)
     private int availabilityStatus;
 
-    @Column(name="vehicle_image_url",nullable = false)
+    @Column(length = 500, nullable = false)
     private String vehicleImageUrl;
 
+    @ManyToOne
+    @JoinColumn(name = "vehicle_subcategory_id")
     @JsonBackReference
-    @OneToMany(mappedBy = "vehicle",fetch = FetchType.LAZY,cascade = {CascadeType.ALL})
-    private Set<Booking> bookings;
-
-    @JsonManagedReference
-    @ManyToOne
-    @JoinColumn(name = "fuel_type_id",nullable = false)
-    private FuelType fuelType;
-
-    @JsonManagedReference
-    @ManyToOne
-    @JoinColumn(name = "location_id",nullable = false)
-    private Location location;
-
-    @JsonManagedReference
-    @ManyToOne
-    @JoinColumn(name = "vehicle_subcategory_id",nullable = false)
     private VehicleSubcategory vehicleSubcategory;
 
-    public Vehicle(String VehicleModel, String VehicleNumber, VehicleSubcategory vehicleSubcategory, String color, Location location, FuelType fuelType, int availabilityStatus, String imageUrl) {
+    @ManyToOne
+    @JoinColumn(name = "location_id", nullable = false)
+    @JsonBackReference
+    private Location location;
 
-        this.vehicleModel=VehicleModel;
-        this.vehicleNumber=VehicleNumber;
-        this.vehicleSubcategory=vehicleSubcategory;
-        this.color=color;
-        this.location=location;
-        this.fuelType=fuelType;
-        this.availabilityStatus=availabilityStatus;
-        this.vehicleImageUrl=imageUrl;
-    }
+    @ManyToOne
+    @JoinColumn(name = "fuel_type_id", nullable = false)
+    @JsonBackReference
+    private FuelType fuelType;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "vehicleWithBooking")
+    @JsonManagedReference
+    private Set<Booking> bookings;
 
     public Vehicle() {
+    }
 
+    public Vehicle(String vehicleModel, String vehicleNumber, String color, int availabilityStatus, String vehicleImageUrl, VehicleSubcategory vehicleSubcategory, Location location, FuelType fuelType) {
+        this.vehicleModel = vehicleModel;
+        this.vehicleNumber = vehicleNumber;
+        this.color = color;
+        this.availabilityStatus = availabilityStatus;
+        this.vehicleImageUrl = vehicleImageUrl;
+        this.vehicleSubcategory = vehicleSubcategory;
+        this.location = location;
+        this.fuelType = fuelType;
+    }
+
+    public Vehicle(int vehicleId, String vehicleModel, String vehicleNumber, String color, int availabilityStatus, String vehicleImageUrl, VehicleSubcategory vehicleSubcategory, Location location, FuelType fuelType) {
+        this.vehicleId = vehicleId;
+        this.vehicleModel = vehicleModel;
+        this.vehicleNumber = vehicleNumber;
+        this.color = color;
+        this.availabilityStatus = availabilityStatus;
+        this.vehicleImageUrl = vehicleImageUrl;
+        this.vehicleSubcategory = vehicleSubcategory;
+        this.location = location;
+        this.fuelType = fuelType;
     }
 
     public int getVehicleId() {
@@ -90,7 +97,6 @@ public class Vehicle {
         this.vehicleNumber = vehicleNumber;
     }
 
-
     public String getColor() {
         return color;
     }
@@ -115,20 +121,12 @@ public class Vehicle {
         this.vehicleImageUrl = vehicleImageUrl;
     }
 
-    public Set<Booking> getBookings() {
-        return bookings;
+    public VehicleSubcategory getVehicleSubcategory() {
+        return vehicleSubcategory;
     }
 
-    public void setBookings(Set<Booking> bookings) {
-        this.bookings = bookings;
-    }
-
-    public FuelType getFuelType() {
-        return fuelType;
-    }
-
-    public void setFuelType(FuelType fuelType) {
-        this.fuelType = fuelType;
+    public void setVehicleSubcategory(VehicleSubcategory vehicleSubcategory) {
+        this.vehicleSubcategory = vehicleSubcategory;
     }
 
     public Location getLocation() {
@@ -139,12 +137,20 @@ public class Vehicle {
         this.location = location;
     }
 
-    public VehicleSubcategory getVehicleSubcategory() {
-        return vehicleSubcategory;
+    public FuelType getFuelType() {
+        return fuelType;
     }
 
-    public void setVehicleSubcategory(VehicleSubcategory vehicleSubcategory) {
-        this.vehicleSubcategory = vehicleSubcategory;
+    public void setFuelType(FuelType fuelType) {
+        this.fuelType = fuelType;
+    }
+
+    public Set<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(Set<Booking> bookings) {
+        this.bookings = bookings;
     }
 
     @Override
@@ -156,9 +162,9 @@ public class Vehicle {
                 ", color='" + color + '\'' +
                 ", availabilityStatus=" + availabilityStatus +
                 ", vehicleImageUrl='" + vehicleImageUrl + '\'' +
-                ", fuelType=" + fuelType +
-                ", location=" + location +
                 ", vehicleSubcategory=" + vehicleSubcategory +
+                ", location=" + location +
+                ", fuelType=" + fuelType +
                 '}';
     }
 

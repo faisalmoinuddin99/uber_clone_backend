@@ -9,21 +9,21 @@ import java.util.Set;
 @Table(name = "role")
 public class Role {
     @Id
-    @Column(name="role_id")
-    @GeneratedValue
     private int roleId;
 
-    @Column(name="role_name",nullable = false,unique = true)
+    @Column(length = 50, nullable = false)
     private String roleName;
 
-    @JsonBackReference
-    @OneToMany(mappedBy = "role",fetch = FetchType.LAZY,cascade = {CascadeType.ALL})
-    private Set<Users> usersSet;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "role")
+    private Set<Users> usersList;
 
     public Role() {
-
     }
 
+    public Role(int roleId, String roleName) {
+        this.roleId = roleId;
+        this.roleName = roleName;
+    }
 
     public int getRoleId() {
         return roleId;
@@ -41,17 +41,12 @@ public class Role {
         this.roleName = roleName;
     }
 
-    public Set<Users> getUsersSet() {
-        return usersSet;
+    public Set<Users> getUsersList() {
+        return usersList;
     }
 
-    public void setUsersSet(Set<Users> usersSet) {
-        this.usersSet = usersSet;
-    }
-
-    public Role(int roleId, String roleName) {
-        this.roleId = roleId;
-        this.roleName = roleName;
+    public void setUsersList(Set<Users> usersList) {
+        this.usersList = usersList;
     }
 
     @Override

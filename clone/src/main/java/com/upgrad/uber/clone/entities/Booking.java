@@ -1,57 +1,44 @@
 package com.upgrad.uber.clone.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "bookings")
 public class Booking {
     @Id
-    @Column(name = "booking_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private int bookingId;
 
-    @Column(name="pickup_date",nullable = false)
-    private LocalDateTime pickupDate;
-
-    @Column(name="dropOff_date",nullable = false)
-    private LocalDateTime dropOffDate;
-
-    @Column(name="booking_date",nullable = false)
-    private LocalDateTime bookingDate;
+    @Column(nullable = false)
+    private Date pickupDate;
 
     @Column(nullable = false)
-    private double amount;
+    private Date dropoffDate;
 
-    @JsonManagedReference
+    @Column(nullable = false)
+    private Date bookingDate;
+
+    @Column(nullable = false)
+    private int amount;
+
     @ManyToOne
-    @JoinColumn(name = "location_id",nullable = false)
+    @JoinColumn(name = "location_id", nullable = false)
+    @JsonBackReference
     private Location location;
 
-    @JsonManagedReference
     @ManyToOne
-    @JoinColumn(name = "vehicle_id",nullable = false)
-    private Vehicle vehicle;
+    @JoinColumn(name = "vehicle_id", nullable = false)
+    @JsonBackReference
+    private Vehicle vehicleWithBooking;
 
-    @JsonManagedReference
     @ManyToOne
-    @JoinColumn(name = "user_id",nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private Users user;
-
-    public Booking(int bookingId, LocalDateTime pickupDate, LocalDateTime dropOffDate, LocalDateTime bookingDate, double amount, Location location, Vehicle vehicle, Users user) {
-        this.bookingId = bookingId;
-        this.pickupDate = pickupDate;
-        this.dropOffDate = dropOffDate;
-        this.bookingDate = bookingDate;
-        this.amount = amount;
-        this.location = location;
-        this.vehicle = vehicle;
-        this.user = user;
-    }
-
-public Booking() {}
 
     public int getBookingId() {
         return bookingId;
@@ -61,35 +48,35 @@ public Booking() {}
         this.bookingId = bookingId;
     }
 
-    public LocalDateTime getPickupDate() {
+    public Date getPickupDate() {
         return pickupDate;
     }
 
-    public void setPickupDate(LocalDateTime pickupDate) {
+    public void setPickupDate(Date pickupDate) {
         this.pickupDate = pickupDate;
     }
 
-    public LocalDateTime getDropOffDate() {
-        return dropOffDate;
+    public Date getDropoffDate() {
+        return dropoffDate;
     }
 
-    public void setDropOffDate(LocalDateTime dropOffDate) {
-        this.dropOffDate = dropOffDate;
+    public void setDropoffDate(Date dropoffDate) {
+        this.dropoffDate = dropoffDate;
     }
 
-    public LocalDateTime getBookingDate() {
+    public Date getBookingDate() {
         return bookingDate;
     }
 
-    public void setBookingDate(LocalDateTime bookingDate) {
+    public void setBookingDate(Date bookingDate) {
         this.bookingDate = bookingDate;
     }
 
-    public double getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 
@@ -101,12 +88,12 @@ public Booking() {}
         this.location = location;
     }
 
-    public Vehicle getVehicle() {
-        return vehicle;
+    public Vehicle getVehicleWithBooking() {
+        return vehicleWithBooking;
     }
 
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
+    public void setVehicleWithBooking(Vehicle vehicleWithBooking) {
+        this.vehicleWithBooking = vehicleWithBooking;
     }
 
     public Users getUser() {
@@ -122,11 +109,11 @@ public Booking() {}
         return "Booking{" +
                 "bookingId=" + bookingId +
                 ", pickupDate=" + pickupDate +
-                ", dropOffDate=" + dropOffDate +
+                ", dropoffDate=" + dropoffDate +
                 ", bookingDate=" + bookingDate +
                 ", amount=" + amount +
                 ", location=" + location +
-                ", vehicle=" + vehicle +
+                ", vehicle=" + vehicleWithBooking +
                 ", user=" + user +
                 '}';
     }

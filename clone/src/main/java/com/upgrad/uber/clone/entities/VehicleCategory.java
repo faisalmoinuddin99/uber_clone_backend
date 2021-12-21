@@ -8,19 +8,20 @@ import java.util.Set;
 @Entity
 public class VehicleCategory {
     @Id
-    @Column(name="vehicle_category_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int vehicleCategoryId;
 
-    @Column(name="vehicle_category_name",nullable = false,unique = true)
+    @Column(length = 50, nullable = false, unique = true)
     private String vehicleCategoryName;
 
-    @JsonBackReference
-    @OneToMany(mappedBy = "vehicleCategory",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "vehicleCategory")
     private Set<VehicleSubcategory> vehicleSubcategories;
 
     public VehicleCategory() {
+    }
 
+    public VehicleCategory(int vehicleCategoryId, String vehicleCategoryName) {
+        this.vehicleCategoryId = vehicleCategoryId;
+        this.vehicleCategoryName = vehicleCategoryName;
     }
 
     public int getVehicleCategoryId() {
@@ -45,11 +46,6 @@ public class VehicleCategory {
 
     public void setVehicleSubcategories(Set<VehicleSubcategory> vehicleSubcategories) {
         this.vehicleSubcategories = vehicleSubcategories;
-    }
-
-    public VehicleCategory(int vehicleCategoryId, String vehicleCategoryName) {
-        this.vehicleCategoryId = vehicleCategoryId;
-        this.vehicleCategoryName = vehicleCategoryName;
     }
 
     @Override

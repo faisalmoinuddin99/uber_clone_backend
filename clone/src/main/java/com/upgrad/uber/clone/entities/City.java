@@ -10,23 +10,20 @@ import java.util.Set;
 public class City {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int cityId ;
+    private int cityId;
 
-    @Column(name="city_name",nullable = false)
+    @Column(length = 50, nullable = false)
     private String cityName;
 
-    @JsonBackReference
-    @OneToMany(mappedBy = "city",fetch = FetchType.LAZY,cascade = {CascadeType.ALL})
+    @OneToMany (fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "city")
     private Set<Location> locations;
+
+    public City() {
+    }
 
     public City(int cityId, String cityName) {
         this.cityId = cityId;
         this.cityName = cityName;
-    }
-
-    public City() {
-
     }
 
     public int getCityId() {
@@ -52,7 +49,6 @@ public class City {
     public void setLocations(Set<Location> locations) {
         this.locations = locations;
     }
-
 
     @Override
     public String toString() {

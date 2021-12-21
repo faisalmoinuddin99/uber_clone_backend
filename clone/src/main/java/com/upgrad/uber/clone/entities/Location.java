@@ -10,34 +10,36 @@ import java.util.Set;
 @Table(name = "locations")
 public class Location {
     @Id
-    @Column(name = "location_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int locationId;
 
-    @Column(name="location_name",nullable = false)
+    @Column(length = 50, nullable = false)
     private String locationName;
 
-    @Column(nullable = false)
+    @Column(length = 100, nullable = false)
     private String address;
 
-    @Column(length = 6,nullable = false)
-    private int pincode;
+    @Column(length = 6, nullable = false)
+    private String pincode;
 
-    @JsonBackReference
-    @OneToMany(mappedBy = "location",fetch = FetchType.LAZY,cascade = {CascadeType.ALL})
-    private Set<Booking> bookings;
-
-    @JsonManagedReference
     @ManyToOne
-    @JoinColumn(name = "city_id",nullable = false)
+    @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
-    @JsonBackReference
-    @OneToMany(mappedBy = "location",fetch = FetchType.LAZY,cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "location")
     private Set<Vehicle> vehicles;
 
-    public Location() {
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "location")
+    private Set<Booking> bookingsList;
 
+    public Location() {
+    }
+
+    public Location(int locationId, String locationName, String address, String pincode, City city) {
+        this.locationId = locationId;
+        this.locationName = locationName;
+        this.address = address;
+        this.pincode = pincode;
+        this.city = city;
     }
 
     public int getLocationId() {
@@ -64,20 +66,12 @@ public class Location {
         this.address = address;
     }
 
-    public int getPincode() {
+    public String getPincode() {
         return pincode;
     }
 
-    public void setPincode(int pincode) {
+    public void setPincode(String pincode) {
         this.pincode = pincode;
-    }
-
-    public Set<Booking> getBookings() {
-        return bookings;
-    }
-
-    public void setBookings(Set<Booking> bookings) {
-        this.bookings = bookings;
     }
 
     public City getCity() {
@@ -96,12 +90,12 @@ public class Location {
         this.vehicles = vehicles;
     }
 
-    public Location(int locationId, String locationName, String address, int pincode, City city) {
-        this.locationId = locationId;
-        this.locationName = locationName;
-        this.address = address;
-        this.pincode = pincode;
-        this.city = city;
+    public Set<Booking> getBookingsList() {
+        return bookingsList;
+    }
+
+    public void setBookingsList(Set<Booking> bookingsList) {
+        this.bookingsList = bookingsList;
     }
 
     @Override
@@ -111,7 +105,6 @@ public class Location {
                 ", locationName='" + locationName + '\'' +
                 ", address='" + address + '\'' +
                 ", pincode='" + pincode + '\'' +
-                ", city=" + city +
                 '}';
     }
 }

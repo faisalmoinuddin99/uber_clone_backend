@@ -10,53 +10,46 @@ import java.util.Set;
 @Table(name = "users")
 public class Users {
     @Id
-    @Column(name="user_id")
     @GeneratedValue
     private int userId;
 
-    @Column(name="first_name",nullable = false)
+    @Column(length = 50, nullable = false)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(length = 50)
     private String lastName;
 
-    @Column(nullable = false)
+    @Column(length = 50, nullable = false)
     private String password;
 
-    @Column(nullable = false,unique = true)
+    @Column(length = 50, nullable = false, unique = true)
     private String email;
 
-    @Column(name="mobile_no",nullable = false,unique = true,length = 10)
+    @Column(length = 10, nullable = false, unique = true)
     private String mobileNo;
 
-    @Column(name="wallet_money")
-    private double walletMoney=10000.00 ;
+    private float walletMoney = 10000.00f;
 
-    @JsonBackReference
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = {CascadeType.ALL})
-    private Set<Booking> bookings;
-
-    @JsonManagedReference
     @ManyToOne
-    @JoinColumn(name = "role_id",nullable = false)
+    @JoinColumn(name = "role_id", nullable = false)
+    @JsonBackReference
     private Role role;
 
-    public Users() {
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonManagedReference
+    private Set<Booking> bookings;
 
+    public Users() {
     }
 
-    @Override
-    public String toString() {
-        return "Users{" +
-                "userId=" + userId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", mobileNo='" + mobileNo + '\'' +
-                ", walletMoney=" + walletMoney +
-                ", role=" + role +
-                '}';
+    public Users(String firstName, String lastName, String password, String email, String mobileNo, float walletMoney, Role role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.email = email;
+        this.mobileNo = mobileNo;
+        this.walletMoney = walletMoney;
+        this.role = role;
     }
 
     public int getUserId() {
@@ -107,20 +100,12 @@ public class Users {
         this.mobileNo = mobileNo;
     }
 
-    public double getWalletMoney() {
+    public float getWalletMoney() {
         return walletMoney;
     }
 
-    public void setWalletMoney(double walletMoney) {
+    public void setWalletMoney(float walletMoney) {
         this.walletMoney = walletMoney;
-    }
-
-    public Set<Booking> getBookings() {
-        return bookings;
-    }
-
-    public void setBookings(Set<Booking> bookings) {
-        this.bookings = bookings;
     }
 
     public Role getRole() {
@@ -131,15 +116,26 @@ public class Users {
         this.role = role;
     }
 
-    public Users( String firstName, String lastName, String password, String email, String mobileNo, double walletMoney, Role role) {
+    public Set<Booking> getBookings() {
+        return bookings;
+    }
 
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-        this.email = email;
-        this.mobileNo = mobileNo;
-        this.walletMoney = walletMoney;
-        this.role = role;
+    public void setBookings(Set<Booking> bookings) {
+        this.bookings = bookings;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", mobileNo='" + mobileNo + '\'' +
+                ", walletMoney=" + walletMoney +
+                ", role=" + role +
+                '}';
     }
 
 }
