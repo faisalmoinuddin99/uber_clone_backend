@@ -7,7 +7,9 @@ import com.upgrad.uber.clone.exceptions.BadCredentialsException;
 import com.upgrad.uber.clone.exceptions.UserAlreadyExistsException;
 import com.upgrad.uber.clone.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserServiceImpl implements UserService{
 
     @Autowired
@@ -15,18 +17,30 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public Users getUser(Users user) throws APIException, UserNotFoundException, BadCredentialsException {
-        return null;
+        Users checkUser = userDao.findByEmailIgnoreCase(user.getEmail()) ;
+        if (checkUser == null){
+            throw new UserNotFoundException("User Not Found") ;
+        }
+        Users checkUserNameAndPassword = userDao.findByEmailAndPassword(user.getEmail(),user.getPassword()) ;
+        if (checkUserNameAndPassword == null){
+            throw new BadCredentialsException("Unauthorized User") ;
+        }
+
+
+        return checkUserNameAndPassword;
     }
 
     @Override
     public Users createUser(Users users) throws APIException, UserAlreadyExistsException {
       Users checkEmail = userDao.findByEmailIgnoreCase(users.getEmail()) ;
-      if (checkEmail != null)
+      if (checkEmail != null){
           throw new UserAlreadyExistsException("Email already exist") ;
+      }
 
       Users checkMobileNumber = userDao.findByMobileNoIgnoreCase(users.getMobileNo()) ;
-      if (checkMobileNumber != null)
+      if (checkMobileNumber != null){
           throw new UserAlreadyExistsException("Mobile number already exist") ;
+      }
 
         return userDao.save(users);
     }
