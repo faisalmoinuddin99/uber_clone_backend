@@ -9,4 +9,5 @@ import com.upgrad.uber.clone.exceptions.UserNotFoundException;
 public interface UserService {
     public  Users getUser(Users user) throws APIException, UserNotFoundException, BadCredentialsException;
     public Users createUser(Users users) throws APIException, UserAlreadyExistsException;
+    public Users getUsersById(int id) throws APIException, UserNotFoundException ;
 }

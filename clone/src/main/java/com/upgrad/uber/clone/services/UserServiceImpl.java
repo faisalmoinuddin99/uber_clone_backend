@@ -44,4 +44,13 @@ public class UserServiceImpl implements UserService{
 
         return userDao.save(users);
     }
+
+    @Override
+    public Users getUsersById(int id) throws APIException, UserNotFoundException {
+       Users users = userDao.findById(id)
+               .orElseThrow(
+                       () -> new RuntimeException("No Book Found for this Id:" +id)
+               ) ;
+        return users;
+    }
 }

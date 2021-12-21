@@ -4,6 +4,7 @@ import com.upgrad.uber.clone.dao.RoleDao;
 import com.upgrad.uber.clone.dao.UserDao;
 import com.upgrad.uber.clone.entities.Role;
 import com.upgrad.uber.clone.entities.Users;
+import com.upgrad.uber.clone.exceptions.BadCredentialsException;
 import com.upgrad.uber.clone.services.UserServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
@@ -39,16 +40,22 @@ public class UserServiceTests {
     public static Role role ;
     @BeforeClass
     public static void setUpTestEnv() throws ParseException {
+        Role role2 = new Role() ;
+        role2.setRoleId(1);
         users = new Users("faisal","suleman","user@123","faisal@gmail.com",
-                "9999999999", 60000);
+                "9999999999", 60000,role2);
     }
     @Before
     public void setUpTestMock() {
         when(userDao.save(users)).thenReturn(users);
         when(userDao.findById(1)).thenReturn(java.util.Optional.ofNullable(users));
 
+        Role role1 = new Role() ;
+        role1.setRoleId(1);
+
         Users users1 = new Users("rahul","dua","rahul@123","rahul@gmail.com",
-                "88888888888", 60000);
+                "88888888888", 60000,role1);
+
 
 
         when(userDao.findAll()).thenReturn(new ArrayList<>(Arrays.asList(users, users1)));
@@ -58,4 +65,5 @@ public class UserServiceTests {
     public void testCreateUser() throws ParseException {
         Assert.assertEquals(users, userService.createUser(users));
     }
+
 }

@@ -31,7 +31,7 @@ public class Users {
     private float walletMoney = 10000.00f;
 
     @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
+    @JoinColumn(name = "role_id", nullable = true)
     @JsonBackReference
     private Role role;
 
