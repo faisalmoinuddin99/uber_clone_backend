@@ -1,4 +1,4 @@
-package com.upgrad.uber.clone.services;
+package com.upgrad.uber.clone.services ;
 
 import com.upgrad.uber.clone.dao.BookingDao;
 import com.upgrad.uber.clone.dao.VehicleCategoryDao;
@@ -12,32 +12,40 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 @Service
-public class VehicleServiceImpl implements VehicleService{
+public class VehicleServiceImpl implements VehicleService {
+
+    @Autowired
+    VehicleDao vehicleDao;
+
+    @Autowired
+    VehicleCategoryDao vehicleCategoryDao;
+
+    @Autowired
+    BookingDao bookingDao;
 
 
-        @Autowired
-        VehicleDao vehicleDao;
+    /**
+     * Returns all the vehicle registered on the application.
+     * @return
 
-        @Autowired
-        VehicleCategoryDao vehicleCategoryDao;
+     */
 
-        @Autowired
-        BookingDao bookingDao;
-
-
-
-
-        @Override
-        public List<Vehicle> getAllVehicles() {
+    @Override
+    public List<Vehicle> getAllVehicles() {
         List<Vehicle> returnedVehicleList = vehicleDao.findAll();
         return returnedVehicleList;
     }
 
+    /**
+     * Returns all the available vehicle in the requested Category for
+     * booking with respect to Date, Location and Availability.
 
+     */
 
-        @Override
-        public List<Vehicle> getAvailableVehicles(String categoryName, Date pickUpDate,Date dropDate, int locationId) {
+    @Override
+    public List<Vehicle> getAvailableVehicles(String categoryName, Date pickUpDate,Date dropDate, int locationId) {
 
         List<Vehicle> returnedVehicleList = new ArrayList<>();
 
@@ -98,4 +106,5 @@ public class VehicleServiceImpl implements VehicleService{
         return availableVehicles;
     }
 
-    }
+}
+

@@ -1,12 +1,10 @@
-package com.upgrad.uber.clone.entities;
+package com.upgrad.uber.clone.entities ;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "role")
 public class Role {
     @Id
     private int roleId;
@@ -15,7 +13,7 @@ public class Role {
     private String roleName;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "role")
-    private Set<Users> usersList;
+    private Set<User> usersList;
 
     public Role() {
     }
@@ -41,11 +39,11 @@ public class Role {
         this.roleName = roleName;
     }
 
-    public Set<Users> getUsersList() {
+    public Set<User> getUsersList() {
         return usersList;
     }
 
-    public void setUsersList(Set<Users> usersList) {
+    public void setUsersList(Set<User> usersList) {
         this.usersList = usersList;
     }
 
@@ -56,5 +54,4 @@ public class Role {
                 ", roleName='" + roleName + '\'' +
                 '}';
     }
-
 }

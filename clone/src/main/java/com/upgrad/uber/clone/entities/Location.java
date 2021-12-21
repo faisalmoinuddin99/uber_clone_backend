@@ -1,13 +1,10 @@
-package com.upgrad.uber.clone.entities;
+package com.upgrad.uber.clone.entities ;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "locations")
 public class Location {
     @Id
     private int locationId;

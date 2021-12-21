@@ -1,8 +1,8 @@
-package com.upgrad.uber.clone.services;
+package com.upgrad.uber.clone.services ;
+
 
 import com.upgrad.uber.clone.dao.UserDao;
-import com.upgrad.uber.clone.entities.Users;
-import com.upgrad.uber.clone.exceptions.APIException;
+import com.upgrad.uber.clone.entities.User;
 import com.upgrad.uber.clone.exceptions.BadCredentialsException;
 import com.upgrad.uber.clone.exceptions.UserAlreadyExistsException;
 import com.upgrad.uber.clone.exceptions.UserNotFoundException;
@@ -13,44 +13,45 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService{
 
     @Autowired
-    UserDao userDao ;
+    UserDao userDao;
+
+    /**
+     * Checks if the userDTO mobile number/email is already exists or not.
+     * If not exists, saves the user details else throws an error.
+
+     */
 
     @Override
-    public Users getUser(Users user) throws APIException, UserNotFoundException, BadCredentialsException {
-        Users checkUser = userDao.findByEmailIgnoreCase(user.getEmail()) ;
+    public User createUser(User user) throws UserAlreadyExistsException {
+        User returnedUser = userDao.findByEmailIgnoreCase(user.getEmail());
+        if ( returnedUser != null) {
+            throw new UserAlreadyExistsException("Email Already Exists");
+        }
+        User returnedUser1 = userDao.findByMobileNoIgnoreCase(user.getMobileNo());
+        if (returnedUser1 != null) {
+            throw new UserAlreadyExistsException("Mobile Number Already Exists");
+        }
+        User savedUser = userDao.save(user);
+        return savedUser;
+    }
+
+    /**
+     * Checks if the user is registered or not.
+     * If registered it returns the user details else throws an error.
+
+
+     */
+
+    @Override
+    public User getUser(User user) throws BadCredentialsException, UserNotFoundException {
+        User checkUser = userDao.findByEmailIgnoreCase(user.getEmail());
         if (checkUser == null){
-            throw new UserNotFoundException("User Not Found") ;
+            throw new UserNotFoundException("User not Registered");
         }
-        Users checkUserNameAndPassword = userDao.findByEmailAndPassword(user.getEmail(),user.getPassword()) ;
-        if (checkUserNameAndPassword == null){
-            throw new BadCredentialsException("Unauthorized User") ;
+        User retrievedUser = userDao.findByEmailAndPassword(user.getEmail(), user.getPassword());
+        if (retrievedUser == null){
+            throw new BadCredentialsException("Unauthorized User");
         }
-
-
-        return checkUserNameAndPassword;
-    }
-
-    @Override
-    public Users createUser(Users users) throws APIException, UserAlreadyExistsException {
-      Users checkEmail = userDao.findByEmailIgnoreCase(users.getEmail()) ;
-      if (checkEmail != null){
-          throw new UserAlreadyExistsException("Email already exist") ;
-      }
-
-      Users checkMobileNumber = userDao.findByMobileNoIgnoreCase(users.getMobileNo()) ;
-      if (checkMobileNumber != null){
-          throw new UserAlreadyExistsException("Mobile number already exist") ;
-      }
-
-        return userDao.save(users);
-    }
-
-    @Override
-    public Users getUsersById(int id) throws APIException, UserNotFoundException {
-       Users users = userDao.findById(id)
-               .orElseThrow(
-                       () -> new RuntimeException("No Book Found for this Id:" +id)
-               ) ;
-        return users;
+        return retrievedUser;
     }
 }

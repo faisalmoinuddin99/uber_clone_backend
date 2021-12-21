@@ -1,13 +1,11 @@
-package com.upgrad.uber.clone.entities;
+package com.upgrad.uber.clone.entities ;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "bookings")
 public class Booking {
     @Id
     @GeneratedValue
@@ -38,7 +36,7 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
-    private Users user;
+    private User user;
 
     public int getBookingId() {
         return bookingId;
@@ -96,11 +94,11 @@ public class Booking {
         this.vehicleWithBooking = vehicleWithBooking;
     }
 
-    public Users getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Users user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

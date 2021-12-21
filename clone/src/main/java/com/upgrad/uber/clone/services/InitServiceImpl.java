@@ -1,13 +1,11 @@
-package com.upgrad.uber.clone.services;
+package com.upgrad.uber.clone.services ;
 
 import com.upgrad.uber.clone.dao.*;
 import com.upgrad.uber.clone.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class InitServiceImpl implements InitService {
@@ -103,7 +101,7 @@ public class InitServiceImpl implements InitService {
 
 
     private void addUsers() {
-        Users adminUser = new Users("upGrad","Admin","admin@123","upgrad@gmail.com",
+        User adminUser = new User("upGrad","Admin","admin@123","upgrad@gmail.com",
                 "9999999999", 10000,roleDao.findById(1).get());
         userDao.save(adminUser);
     }

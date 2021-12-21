@@ -1,4 +1,5 @@
-package com.upgrad.uber.clone.entities;
+package com.upgrad.uber.clone.entities ;
+
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -8,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class Users {
+public class User {
     @Id
     @GeneratedValue
     private int userId;
@@ -31,7 +32,7 @@ public class Users {
     private float walletMoney = 10000.00f;
 
     @ManyToOne
-    @JoinColumn(name = "role_id", nullable = true)
+    @JoinColumn(name = "role_id", nullable = false)
     @JsonBackReference
     private Role role;
 
@@ -39,10 +40,10 @@ public class Users {
     @JsonManagedReference
     private Set<Booking> bookings;
 
-    public Users() {
+    public User() {
     }
 
-    public Users(String firstName, String lastName, String password, String email, String mobileNo, float walletMoney, Role role) {
+    public User(String firstName, String lastName, String password, String email, String mobileNo, float walletMoney, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
@@ -51,17 +52,6 @@ public class Users {
         this.walletMoney = walletMoney;
         this.role = role;
     }
-
-    public Users(String firstName, String lastName, String password, String email, String mobileNo, float walletMoney) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-        this.email = email;
-        this.mobileNo = mobileNo;
-        this.walletMoney = walletMoney;
-
-    }
-
 
     public int getUserId() {
         return userId;
@@ -148,5 +138,4 @@ public class Users {
                 ", role=" + role +
                 '}';
     }
-
 }

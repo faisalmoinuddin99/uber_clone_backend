@@ -1,14 +1,11 @@
-package com.upgrad.uber.clone.entities;
+package com.upgrad.uber.clone.entities ;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "cities")
 public class City {
-
     @Id
     private int cityId;
 
@@ -58,5 +55,3 @@ public class City {
                 '}';
     }
 }
-
-
